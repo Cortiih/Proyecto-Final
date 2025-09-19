@@ -1,0 +1,352 @@
+.main {
+  background-color: #f5f5dc;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+  margin-bottom: 20px;
+  background-color: #683b1f;
+  min-height: 150px;
+  height: auto;
+}
+
+.search-section h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.search-box {
+  display: flex;
+  gap: 5px;
+}
+
+input[type="text"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-btn {
+  padding: 10px 20px;
+  background-color: rgb(139, 139, 92);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 3px;
+  transition: 0.5s all ease;
+}
+
+button:hover {
+  background-color: rgb(170, 170, 145);
+}
+
+/*Categorias*/
+
+.categories-section {
+  padding: 60px 0;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.categories-section h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Tarjeta individual */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Imagen de categoría */
+.category-card img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.category-card p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/*Recomendations*/
+
+.recommendations {
+  padding: 20px;
+  background-color: beige;
+}
+
+
+.recommendations h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: black;
+  font-size: 26px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.recommendation-card {
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+  display: flex;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  flex-direction: row;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hotel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+}
+
+.recommendation-card img {
+  width: 400px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px 0 0 12px;
+}
+
+.recommendation-card h3 {
+  font-size: 18px;
+  margin: 10px 15px 5px;
+  color: #333;
+}
+
+.recommendation-card p {
+  margin: 5px 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.recommendation-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.recommendation-link img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pagination button {
+  background-color: #838351;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s, transform 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: beige;
+  transform: scale(1.05);
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: beige;
+  color: #683b1f;
+  font-weight: bold;
+  border: 2px solid #683b1f;
+  transform: scale(1.1);
+}
+
+
+.recommendations-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+
+@media (max-width: 1024px) {
+  .recommendations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .recommendation-card img {
+    width: 70%;
+    height: 180px;
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  /* buscador */
+  .search-section {
+    height: auto;
+    padding: 20px 10px;
+    text-align: center;
+  }
+
+  .search-section h2 {
+    font-size: 22px;
+  }
+
+  .search-box {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 180px;
+    max-width: 300px;
+  }
+
+  .search-btn {
+    flex-shrink: 0;
+    padding: 10px 16px;
+  }
+
+  /* categorías */
+  .categories-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .category-card img {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* recomendaciones */
+  .recommendations-grid {
+    grid-template-columns: 1fr; 
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .recommendation-card {
+    flex-direction: column; 
+    align-items: stretch;
+  }
+
+  .recommendation-card img {
+    width: 100%;
+    height: 200px;     
+    border-radius: 12px 12px 0 0; 
+  }
+
+  .hotel-info {
+    padding: 10px 8px; 
+    gap: 4px;
+  }
+
+  .recommendation-card h3 {
+    font-size: 16px;    
+    margin: 8px 0 4px;
+  }
+
+  .recommendation-card p {
+    font-size: 13px;   
+    margin: 4px 0;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .search-section h2 {
+    font-size: 18px;
+  }
+
+  .category-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .category-card p {
+    font-size: 12px;
+  }
+
+  .recommendation-card h3 {
+    font-size: 16px;
+  }
+
+  .recommendation-card p {
+    font-size: 12px;
+  }
+
+  .hotel-info {
+    padding: 8px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;  
+    gap: 4px;          
+    justify-content: center;
+  }
+
+  .pagination button {
+    padding: 6px 10px; 
+    font-size: 12px; 
+  }
+}
+

@@ -1,0 +1,49 @@
+.add-product{
+  min-height: calc(100vh - 80px);               
+  display: flex;
+  justify-content: center;    
+  align-items: center;        
+  background-color: beige;         
+  margin-top: 30px; 
+}
+
+.container{
+  width: 600px;               
+  height: 400px;              
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: auto;
+}
+
+input, textarea, select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #683b1f;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #a05c35;
+}
