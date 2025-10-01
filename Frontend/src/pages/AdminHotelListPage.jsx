@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./AdminHotelListPage.css";
+import { Link } from "react-router-dom";
 
 
 export const AdminHotelListPage = () => {
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/hotels")
+    fetch("http://localhost:8080/api/hotels")
       .then((res) => res.json())
       .then((data) => {
         console.log("Respuesta del backend:", data);
@@ -22,7 +23,7 @@ export const AdminHotelListPage = () => {
 
     if (!confirmDelete) return;
 
-    fetch(`http://localhost:8080/hotels/${id}`, {
+    fetch(`http://localhost:8080/api/hotels/${id}`, {
       method: "DELETE",
     })
       .then((res) => {
@@ -53,7 +54,9 @@ export const AdminHotelListPage = () => {
               <td>{hotel.id}</td>
               <td>{hotel.name}</td>
               <td>
+                <Link to={`/admin/hotels/edit/${hotel.id}`}>
                 <button className="action-btn">Editar</button>
+                </Link>
                 <button className="action-btn delete" onClick={() => handleDelete(hotel.id)}
                 >Eliminar</button>
               </td>

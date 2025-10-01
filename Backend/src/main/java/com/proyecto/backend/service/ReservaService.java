@@ -3,6 +3,7 @@ package com.proyecto.backend.service;
 import com.proyecto.backend.model.Reserva;
 import com.proyecto.backend.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,25 +12,33 @@ import java.util.Optional;
 @Service
 public class ReservaService {
 
-    @Autowired
-    private ReservaRepository reservaRepository;
+    private final ReservaRepository reservaRepository;
 
-    //save
-    public Reserva save(Reserva reserva){
-        return reservaRepository.save(reserva);
+    @Autowired
+    public ReservaService(ReservaRepository reservaRepository) {
+        this.reservaRepository = reservaRepository;
     }
 
-    //listar
-    public List<Reserva> findAll(){
+    public ResponseEntity<?> save(Reserva reserva) {
+        Reserva saved = reservaRepository.save(reserva);
+        return ResponseEntity.ok(saved);
+    }
+
+    public List<Reserva> findAll() {
         return reservaRepository.findAll();
     }
 
-    //findbyid
-    public Optional<Reserva> findById(Long id){
-        return reservaRepository.findById(id);
+    public ResponseEntity<?> findByIdResponse(Long id) {
+        return reservaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-    //borrar
-    public void delete(Long id){
+
+    public ResponseEntity<?> delete(Long id) {
+        if (!reservaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
         reservaRepository.deleteById(id);
+        return ResponseEntity.ok("Reserva eliminada con éxito");
     }
 }

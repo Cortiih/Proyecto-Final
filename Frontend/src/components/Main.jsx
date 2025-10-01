@@ -12,7 +12,7 @@ export const Main = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/hotels?page=${page}&size=10`)
+    fetch('http://localhost:8080/api/hotels')
       .then(res => res.json())
       .then(data => {
         console.log("Hoteles paginados:", data);
@@ -59,7 +59,7 @@ export const Main = () => {
         <h2>Recomendaciones</h2>
         <div className="recommendations-grid">
           {hotels.map(hotel => (
-            <Link to={`/product/${hotel.id}`} className="recommendation-card" key={hotel.id}>
+            <Link to={`/hotel/${hotel.id}`} className="recommendation-card" key={hotel.id}>
               <img src={hotel.images[0]} alt={hotel.name} />
               <div className='hotel-info'>
                 <h3>{hotel.name}</h3>
@@ -98,3 +98,7 @@ export const Main = () => {
     </main>
   )
 }
+
+
+
+

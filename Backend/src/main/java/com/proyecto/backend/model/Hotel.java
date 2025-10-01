@@ -10,20 +10,26 @@ public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String name;
     private String location;
     private Double pricePerNight;
     private Integer stars;
+    private String description;
 
     @ElementCollection
     private List<String> images;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Hotel() {
 
     }
 
-    public Hotel(Long id, String name, String location, Double pricePerNight, Integer stars, List<String> images) {
-        this.id = id;
+    public Hotel(String name, String location, Double pricePerNight, Integer stars, List<String> images) {
         this.name = name;
         this.location = location;
         this.pricePerNight = pricePerNight;
@@ -71,12 +77,28 @@ public class Hotel {
         this.stars = stars;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<String> getImages() {
         return images;
     }
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
 

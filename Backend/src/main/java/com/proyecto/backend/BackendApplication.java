@@ -1,5 +1,7 @@
 package com.proyecto.backend;
 
+import com.proyecto.backend.model.Category;
+import com.proyecto.backend.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,13 +19,24 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
+    @Bean
+    CommandLineRunner initCategories(CategoryRepository categoryRepository) {
+        return args -> {
+            if (categoryRepository.count() == 0) {
+                categoryRepository.save(new Category("Hotel", "Hoteles y alojamientos"));
+                categoryRepository.save(new Category("Cabaña", "Cabañas en zonas turísticas"));
+                categoryRepository.save(new Category("Departamento", "Departamentos temporarios"));
+            }
+        };
+    }
+
 
     // CommandLineRunner para inicializar hoteles automáticamente
     @Bean
     public CommandLineRunner initDatabase(HotelService hotelService) {
         return args -> {
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Sol",
                     "Mar del Plata",
                     1500.0,
@@ -39,7 +52,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Luna",
                     "Bariloche",
                     1800.0,
@@ -53,7 +66,7 @@ public class BackendApplication {
                     )));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Río",
                     "Mendoza",
                     1200.0,
@@ -69,7 +82,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Nube",
                     "Córdoba",
                     2000.0,
@@ -85,7 +98,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Lago",
                     "Ushuaia",
                     2200.0,
@@ -101,7 +114,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Arena",
                     "Pinamar",
                     1600.0,
@@ -118,7 +131,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Nevado",
                     "San Martín de los Andes",
                     2100.0,
@@ -134,7 +147,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Cataratas",
                     "Puerto Iguazú",
                     2300.0,
@@ -150,7 +163,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Montaña",
                     "Tafí del Valle",
                     1400.0,
@@ -166,7 +179,7 @@ public class BackendApplication {
             ));
 
             hotelService.saveHotel(new Hotel(
-                    null,
+
                     "Hotel Bosque",
                     "Villa La Angostura",
                     1950.0,
@@ -182,4 +195,5 @@ public class BackendApplication {
             ));
         };
     }
+
 }

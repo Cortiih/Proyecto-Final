@@ -8,7 +8,7 @@ export const AdminPanelPage = () => {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768); 
+      setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -25,17 +25,17 @@ export const AdminPanelPage = () => {
 
   return (
     <div className="admin-page">
-    <div className="admin-panel">
-      <h1>Panel de Administración</h1>
-      <nav className="admin-menu">
-        <ul>
-          <li><Link to="/admin/add-product">Agregar Producto</Link></li>
-          <li><Link to="/admin/hotel-list">Lista de Productos</Link></li>
-          <li><Link to="/admin/reservas">Gestionar Reservas</Link></li>
-          <li><Link to="/admin/reportes">Ver Reportes</Link></li>
-        </ul>
-      </nav>
-    </div>
+      <div className="admin-panel">
+        <h1>Panel de Administración</h1>
+        <nav className="admin-menu">
+          <ul>
+            <li><Link to="/admin/add-hotel">Agregar Producto</Link></li>
+            <li><Link to="/admin/hotel-list">Lista de Productos</Link></li>
+            <li><Link to="/admin/reservas">Gestionar Reservas</Link></li>
+            <li><Link to="/admin/reportes">Ver Reportes</Link></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };

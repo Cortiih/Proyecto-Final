@@ -1,6 +1,6 @@
 import React from "react"
 import "./Header.css"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 
 export const Header = () => {
@@ -8,7 +8,7 @@ export const Header = () => {
     const location = useLocation();
 
     // Si estoy en /product/:id => oculto este header
-    if (location.pathname.startsWith("/product/")) {
+    if (location.pathname.startsWith("/hotel/")) {
         return null;
     }
 
@@ -24,7 +24,11 @@ export const Header = () => {
             </div>
 
             <div className="buttons">
+                <nav>
+                <Link to="/register">
                 <button className="btn" type="button">Crear Cuenta</button>
+                </Link>
+                </nav>
                 <button className="btn" type="button">Iniciar Sesion</button>
             </div>
         </header>

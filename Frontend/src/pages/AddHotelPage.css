@@ -1,4 +1,4 @@
-.add-product{
+.add-product, .edit-product{
   min-height: calc(100vh - 80px);               
   display: flex;
   justify-content: center;    
@@ -9,7 +9,7 @@
 
 .container{
   width: 600px;               
-  height: 400px;              
+  height: 100%;              
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -18,6 +18,12 @@
   flex-direction: column;
   align-items: center;  
   justify-content: center;
+  margin: 20px;
+  margin-top: 50px;
+}
+
+h1{
+  color: #683b1f;
 }
 
 form {
