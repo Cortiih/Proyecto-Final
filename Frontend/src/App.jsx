@@ -9,6 +9,10 @@ import { AdminPanelPage } from "./pages/AdminPanelPage"
 import { AdminHotelListPage } from "./pages/AdminHotelListPage"
 import { EditProductPage } from "./pages/EditProductPage"
 import { RegisterPage } from "./pages/RegisterPage"
+import { LoginPage } from "./pages/LoginPage"
+import { AdminUsersPage } from "./pages/AdminUserPage"
+import { AdminFeaturesPage } from "./pages/AdminFeaturesPage"
+import { AdminAddCategory } from "./pages/AdminAddCategory"
 
 function App() {
     return(
@@ -23,6 +27,10 @@ function App() {
         <Route path="/admin/hotels/edit/:id" element={<EditProductPage />} /> 
         <Route path="/hotel/:id" element={<HotelDetailPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/admin/users" element={<AdminUsersPage/>} />
+        <Route path="/admin/features" element={<AdminFeaturesPage/>} />
+        <Route path="/admin/add-categories" element={<AdminAddCategory/>} />
       </Routes>
       <Footer/>
       </BrowserRouter>

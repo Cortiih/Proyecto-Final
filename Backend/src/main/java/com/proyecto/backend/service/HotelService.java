@@ -46,14 +46,31 @@ public class HotelService {
                 : ResponseEntity.notFound().build();
     }
 
-    // Actualizar
-    public ResponseEntity<?> update(Long id, Hotel hotel) {
-        if (!hotelRepository.existsById(id)) {
+    // Actualizar hotel existente
+    public ResponseEntity<?> update(Long id, Hotel hotelDetails) {
+        Optional<Hotel> optionalHotel = hotelRepository.findById(id);
+
+        if (optionalHotel.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        hotel.setId(id);
-        Hotel updated = hotelRepository.save(hotel);
-        return ResponseEntity.ok(updated);
+
+        Hotel existingHotel = optionalHotel.get();
+
+        existingHotel.setName(hotelDetails.getName());
+        existingHotel.setDescription(hotelDetails.getDescription());
+        existingHotel.setImages(hotelDetails.getImages());
+
+        //Actualizar category
+        if (hotelDetails.getCategory() != null && hotelDetails.getCategory().getId() != null) {
+            existingHotel.setCategory(hotelDetails.getCategory());
+        }
+        //Actualizar features
+        if (hotelDetails.getFeatures() != null) {
+            existingHotel.setFeatures(hotelDetails.getFeatures());
+        }
+
+        Hotel updatedHotel = hotelRepository.save(existingHotel);
+        return ResponseEntity.ok(updatedHotel);
     }
 
     // Eliminar
@@ -64,4 +81,8 @@ public class HotelService {
         hotelRepository.deleteById(id);
         return ResponseEntity.ok("Hotel eliminado con éxito");
     }
+
+    public ResponseEntity<?> findByCategoryName(String categoryName) {
+        var hotels = hotelRepository.findByCategory_Name(categoryName);
+        return ResponseEntity.ok(hotels);}
 }

@@ -2,6 +2,7 @@ package com.proyecto.backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,15 @@ public class Hotel {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany
+    @JoinTable(
+            name = "hotel_features",
+            joinColumns = @JoinColumn(name = "hotel_id"),
+            inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
+
+    private List<Feature> features = new ArrayList<>();
 
     public Hotel() {
 
@@ -99,6 +109,14 @@ public class Hotel {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(List<Feature> features) {
+        this.features = features;
     }
 }
 

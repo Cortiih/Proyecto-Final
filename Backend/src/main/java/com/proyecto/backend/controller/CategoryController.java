@@ -3,6 +3,7 @@ package com.proyecto.backend.controller;
 import com.proyecto.backend.model.Category;
 import com.proyecto.backend.repository.CategoryRepository;
 import com.proyecto.backend.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,8 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
+
+
 
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody Category category) {

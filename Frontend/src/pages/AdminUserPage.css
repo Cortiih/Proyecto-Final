@@ -1,0 +1,77 @@
+.admin-users-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+}
+
+.admin-users-card {
+  background: #fff;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+}
+
+.admin-users-card h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table thead {
+  background-color: #683b1f;
+  color: #fff;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.users-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.users-table td {
+  color: #444;
+}
+
+.action-btn-make, .action-btn-remove{
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.action-btn-make{
+    background-color: #3baa1f;
+}
+.action-btn-make:hover {
+  background-color: #288b28;
+}
+
+.action-btn-remove{
+    background-color: rgb(209, 26, 26);
+}
+.action-btn-remove:hover{
+    background-color: rgb(173, 7, 7);
+}
+
+

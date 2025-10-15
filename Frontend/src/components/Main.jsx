@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 export const Main = () => {
 
   const [hotels, setHotels] = useState([]);
+  const [filteredHotels, setFilteredHotels] = useState([]);
+  const [categories] = useState(["Hotel", "Cabaña", "Departamento"]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -17,10 +20,35 @@ export const Main = () => {
       .then(data => {
         console.log("Hoteles paginados:", data);
         setHotels(data.content);
+        setFilteredHotels(data.content);
         setTotalPages(data.totalPages);
       })
       .catch(error => console.error(error));
   }, [page]);
+
+
+
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      setFilteredHotels(hotels);
+    } else {
+      setFilteredHotels(
+        hotels.filter(hotel =>
+          selectedCategories.includes(hotel.category?.name)
+        )
+      );
+    }
+  }, [selectedCategories, hotels]);
+
+  const toggleCategory = (category) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const clearFilters = () => setSelectedCategories([]);
 
 
   return (
@@ -55,10 +83,37 @@ export const Main = () => {
         </div>
       </section>
 
+      {/* 🔹 Sección de filtrado funcional */}
+      <section className="categories-filter">
+        <h2>Filtrar por categoría</h2>
+        <div className="categories-grid">
+          {categories.map(category => (
+            <button
+              key={category}
+              className={`category-btn ${selectedCategories.includes(category) ? 'active' : ''}`}
+              onClick={() => toggleCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {selectedCategories.length > 0 && (
+          <button className="clear-filters-btn" onClick={clearFilters}>
+            Quitar filtros
+          </button>
+        )}
+
+        <h2>
+          Resultados ({filteredHotels.length} de {hotels.length})
+        </h2>
+      </section>
+
+
       <section className="recommendations">
         <h2>Recomendaciones</h2>
         <div className="recommendations-grid">
-          {hotels.map(hotel => (
+          {filteredHotels.map(hotel => (
             <Link to={`/hotel/${hotel.id}`} className="recommendation-card" key={hotel.id}>
               <img src={hotel.images[0]} alt={hotel.name} />
               <div className='hotel-info'>

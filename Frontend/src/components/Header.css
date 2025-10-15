@@ -50,6 +50,39 @@
   background-color: beige;
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info .avatar-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-info .btn {
+    margin-left: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background-color: #683b1f;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
 @media (max-width: 1024px) {
   .lema {
     font-size: 14px;
@@ -114,5 +147,36 @@
   .btn {
     padding: 4px 6px;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  .user-info {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 5px;
+  }
+
+  .user-info .avatar-name {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+  }
+
+  .user-info .avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .user-info span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .user-info .btn {
+    padding: 5px 12px;
+    font-size: 13px;
   }
 }

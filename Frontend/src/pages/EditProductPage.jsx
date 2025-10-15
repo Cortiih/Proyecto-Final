@@ -6,7 +6,6 @@ import "./AddHotelPage.css";
 export const EditProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -14,7 +13,10 @@ export const EditProductPage = () => {
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  
+  const [features, setFeatures] = useState([]);
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -23,8 +25,9 @@ export const EditProductPage = () => {
 
         setName(product.name);
         setDescription(product.description);
-        setCategory(product.category);
+        setCategory(product.category ? hotel.category.id.toString() : '');
         setImages(product.images || []);
+        setSelectedFeatures(product.features?.map(f => f.id) || []);
       } catch (err) {
         console.error(err);
         setError("No se pudo cargar el producto.");
@@ -33,6 +36,21 @@ export const EditProductPage = () => {
 
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/features")
+      .then(res => setFeatures(res.data))
+      .catch(err => console.error("Error al cargar características:", err));
+  }, []);
+
+  const handleFeatureChange = (featureId) => {
+    setSelectedFeatures(prev =>
+      prev.includes(featureId)
+        ? prev.filter(id => id !== featureId)
+        : [...prev, featureId]
+    );
+  };
+
 
   const handleImageChange = (index, value) => {
     const newImages = [...images];
@@ -44,12 +62,14 @@ export const EditProductPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       await axios.put(`http://localhost:8080/api/hotels/${id}`, {
         name,
         description,
-        category,
-        images
+        category: { id: selectedCategory },
+        images,
+        features: selectedFeatures.map(id => ({ id }))
       });
 
       alert("Producto actualizado correctamente!");
@@ -85,9 +105,9 @@ export const EditProductPage = () => {
 
           <label>Categoría</label>
           <select value={category} onChange={e => setCategory(e.target.value)} required>
-            <option value="Hotel">Hotel</option>
-            <option value="Cabaña">Cabaña</option>
-            <option value="Departamento">Departamento</option>
+            <option value="1">Hotel</option>
+            <option value="2">Cabaña</option>
+            <option value="3">Departamento</option>
           </select>
 
           <label>Imágenes</label>
@@ -100,6 +120,21 @@ export const EditProductPage = () => {
             />
           ))}
           <button type="button" onClick={handleAddImage}>Agregar otra imagen</button>
+
+
+          <h3>Características</h3>
+          <div className="features-list">
+            {features.map(f => (
+              <label key={f.id} style={{ display: "block", marginBottom: "8px" }}>
+                <input
+                  type="checkbox"
+                  checked={selectedFeatures.includes(f.id)}
+                  onChange={() => handleFeatureChange(f.id)}
+                />
+                <i className={`fa ${f.icon}`} style={{ marginLeft: "8px" }}></i> {f.name}
+              </label>
+            ))}
+          </div>
 
           <button type="submit">Guardar Cambios</button>
         </form>

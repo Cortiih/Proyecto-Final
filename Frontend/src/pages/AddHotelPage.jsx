@@ -17,10 +17,17 @@ export const AddHotelPage = () => {
     const [images, setImages] = useState([""]);
     const [error, setError] = useState("");
 
+    const [features, setFeatures] = useState([]);
+    const [selectedFeatures, setSelectedFeatures] = useState([]);
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/categories")
             .then(res => setCategories(res.data))
             .catch(err => console.error("Error cargando categorías:", err));
+
+        axios.get("http://localhost:8080/api/features")
+            .then(res => setFeatures(res.data))
+            .catch(err => console.error("Error cargando características:", err));
     }, [])
 
     const handleAddImage = () => setImages([...images, ""]);
@@ -30,6 +37,16 @@ export const AddHotelPage = () => {
         newImages[index] = value;
         setImages(newImages);
     }
+
+    const handleFeatureChange = (id) => {
+        if (selectedFeatures.includes(id)) {
+            // Si ya estaba, la sacamoss
+            setSelectedFeatures(selectedFeatures.filter(f => f !== id));
+        } else {
+            // Si no estaba, la agregamos
+            setSelectedFeatures([...selectedFeatures, id]);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,7 +58,8 @@ export const AddHotelPage = () => {
                 pricePerNight: parseFloat(pricePerNight),
                 stars: parseInt(stars),
                 category: { id: categoryId },
-                images
+                images,
+                features: selectedFeatures.map(id => ({ id }))
             });
             alert("Producto agregado correctamente!");
             navigate("/");
@@ -57,46 +75,46 @@ export const AddHotelPage = () => {
                 <h1>Agregar Producto</h1>
                 {error && <p style={{ color: "red" }}>{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    
-                    <input 
-                        type="text" 
-                        placeholder='Nombre' 
-                        value={name} 
-                        onChange={e => setName(e.target.value)} 
-                        required 
+
+                    <input
+                        type="text"
+                        placeholder='Nombre'
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        required
                     />
 
-                    <textarea 
-                        placeholder='Descripción' 
-                        value={description} 
-                        onChange={e => setDescription(e.target.value)} 
-                        required 
+                    <textarea
+                        placeholder='Descripción'
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        required
                     />
 
-                    <input 
-                        type="text" 
-                        placeholder='Ubicación' 
-                        value={location} 
-                        onChange={e => setLocation(e.target.value)} 
-                        required 
+                    <input
+                        type="text"
+                        placeholder='Ubicación'
+                        value={location}
+                        onChange={e => setLocation(e.target.value)}
+                        required
                     />
 
-                    <input 
-                        type="number" 
-                        placeholder='Precio por noche' 
-                        value={pricePerNight} 
-                        onChange={e => setPricePerNight(e.target.value)} 
-                        required 
+                    <input
+                        type="number"
+                        placeholder='Precio por noche'
+                        value={pricePerNight}
+                        onChange={e => setPricePerNight(e.target.value)}
+                        required
                     />
 
-                    <input 
-                        type="number" 
-                        placeholder='Estrellas (1-5)' 
-                        min="1" 
+                    <input
+                        type="number"
+                        placeholder='Estrellas (1-5)'
+                        min="1"
                         max="5"
-                        value={stars} 
-                        onChange={e => setStars(e.target.value)} 
-                        required 
+                        value={stars}
+                        onChange={e => setStars(e.target.value)}
+                        required
                     />
 
                     <select
@@ -121,7 +139,24 @@ export const AddHotelPage = () => {
                         />
                     ))}
                     <button type="button" onClick={handleAddImage}>Agregar otra imagen</button>
-                    
+
+
+                    <div className="features-section">
+                        <h3>Características</h3>
+                        <div className="features-list">
+                            {features.map(f => (
+                                <label key={f.id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedFeatures.includes(f.id)}
+                                        onChange={() => handleFeatureChange(f.id)}
+                                    />
+                                    <i className={`fa ${f.icon}`}></i> {f.name}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
                     <button type="submit">Guardar Producto</button>
                 </form>
             </div>

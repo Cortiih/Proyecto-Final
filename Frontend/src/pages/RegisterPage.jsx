@@ -12,7 +12,7 @@ export const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        //Validaciones
+        //Validar
         if (!name || !lastName || !email || !password) {
             setError("Todos los campos son obligatorios");
             return;
@@ -28,7 +28,6 @@ export const RegisterPage = () => {
 
         setError("");
 
-        //Enviar datos al backend
         try {
             const res = await fetch("http://localhost:8080/api/users/register", {
                 method: "POST",

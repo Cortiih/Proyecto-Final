@@ -101,6 +101,57 @@ button:hover {
   color: #333;
 }
 
+.categories-filter {
+  background-color: white;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.categories-filter h2 {
+  color: #683b1f;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+}
+
+.category-btn {
+  background-color: #fff;
+  border: 2px solid #683b1f;
+  color: #683b1f;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  background-color: #683b1f;
+  color: #fff;
+}
+
+.category-btn.active {
+  background-color: #683b1f;
+  color: #fff;
+}
+
+.clear-filters-btn {
+  background-color: rgb(139, 139, 92);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-filters-btn:hover {
+  background-color: rgb(170, 170, 145);
+}
+
 /*Recomendations*/
 
 .recommendations {
@@ -197,7 +248,7 @@ button:hover {
 }
 
 .pagination button:hover:not(:disabled) {
-  background-color: beige;
+  background-color: rgb(180, 180, 111);
   transform: scale(1.05);
 }
 
@@ -230,6 +281,19 @@ button:hover {
     width: 70%;
     height: 180px;
     border-radius: 12px 12px 0 0;
+  }
+
+  .categories-filter {
+    padding: 20px;
+  }
+
+  .filter-buttons {
+    gap: 10px;
+  }
+
+  .category-btn {
+    padding: 8px 14px;
+    font-size: 14px;
   }
 }
 
@@ -275,6 +339,34 @@ button:hover {
   .category-card img {
     width: 120px;
     height: 120px;
+  }
+
+  /*filter*/
+ .categories-filter {
+    padding: 15px;
+  }
+
+  .categories-filter h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+  }
+
+  .category-btn {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .clear-filters-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
   }
 
   /* recomendaciones */
@@ -324,6 +416,37 @@ button:hover {
 
   .category-card p {
     font-size: 12px;
+  }
+
+  .categories-filter {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .categories-filter h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr; 
+    gap: 8px;
+  }
+
+  .category-btn {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+
+  .clear-filters-btn {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .results-info {
+    font-size: 13px;
   }
 
   .recommendation-card h3 {

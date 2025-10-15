@@ -43,6 +43,11 @@ public class HotelController {
         return hotelService.findByIdResponse(id);
     }
 
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<?> getByCategory(@PathVariable String categoryName) {
+        return hotelService.findByCategoryName(categoryName);
+    }
+
     // Actualizar
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Hotel hotel) {

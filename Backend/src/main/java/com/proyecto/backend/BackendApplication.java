@@ -1,7 +1,9 @@
 package com.proyecto.backend;
 
 import com.proyecto.backend.model.Category;
+import com.proyecto.backend.model.Feature;
 import com.proyecto.backend.repository.CategoryRepository;
+import com.proyecto.backend.repository.FeatureRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +31,49 @@ public class BackendApplication {
             }
         };
     }
+
+    @Bean
+    CommandLineRunner initData(FeatureRepository featureRepository) {
+        return args -> {
+            if (featureRepository.count() == 0) {
+                Feature wifi = new Feature();
+                wifi.setName("WiFi");
+                wifi.setIcon("fa-wifi");
+
+                Feature aire = new Feature();
+                aire.setName("Aire acondicionado");
+                aire.setIcon("fa-snowflake");
+
+                Feature estacionamiento = new Feature();
+                estacionamiento.setName("Estacionamiento");
+                estacionamiento.setIcon("fa-car");
+
+                Feature cocina = new Feature();
+                cocina.setName("Cocina");
+                cocina.setIcon("fa-kitchen-set");
+
+                Feature televisor = new Feature();
+                televisor.setName("Televisor");
+                televisor.setIcon("fa-tv");
+
+                Feature mascotas = new Feature();
+                mascotas.setName("Apto mascotas");
+                mascotas.setIcon("fa-paw");
+
+                featureRepository.save(wifi);
+                featureRepository.save(aire);
+                featureRepository.save(estacionamiento);
+                featureRepository.save(cocina);
+                featureRepository.save(televisor);
+                featureRepository.save(mascotas);
+
+                System.out.println("✅ Características iniciales cargadas correctamente");
+            } else {
+                System.out.println("ℹ️ Las características ya estaban cargadas, no se agregaron duplicados");
+            }
+        };
+    }
+
 
 
     // CommandLineRunner para inicializar hoteles automáticamente

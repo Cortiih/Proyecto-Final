@@ -17,10 +17,18 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    // Guardar con validaciones
     public ResponseEntity<?> saveCategory(Category category) {
         if (category.getName() == null || category.getName().isEmpty()) {
             return ResponseEntity.badRequest().body("El nombre de la categoría es obligatorio");
         }
+
+        // Validar título único
+        Optional<Category> existing = categoryRepository.findByName(category.getName());
+        if (existing.isPresent()) {
+            return ResponseEntity.badRequest().body("El nombre de la categoría ya existe");
+        }
+
         Category saved = categoryRepository.save(category);
         return ResponseEntity.ok(saved);
     }
@@ -43,3 +51,4 @@ public class CategoryService {
         return ResponseEntity.ok("Categoría eliminada con éxito");
     }
 }
+

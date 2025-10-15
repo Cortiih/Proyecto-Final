@@ -1,9 +1,12 @@
 import React from "react"
 import "./Header.css"
 import { Link, useLocation } from "react-router-dom"
+import { useAuth } from "../context/AuthProvider";
 
 
 export const Header = () => {
+
+    const { user, logout } = useAuth();
 
     const location = useLocation();
 
@@ -24,13 +27,28 @@ export const Header = () => {
             </div>
 
             <div className="buttons">
-                <nav>
-                <Link to="/register">
-                <button className="btn" type="button">Crear Cuenta</button>
-                </Link>
-                </nav>
-                <button className="btn" type="button">Iniciar Sesion</button>
+                {!user ? (
+                    // Si no hay usuario
+                    <>
+                        <Link to="/register">
+                            <button className="btn" type="button">Crear Cuenta</button>
+                        </Link>
+                        <Link to="/login">
+                            <button className="btn" type="button">Iniciar Sesion</button>
+                        </Link>
+                    </>
+                ) : (
+                    // Si hay usuario logueado
+                    <div className="user-info">
+                        <div className="avatar-name">
+                        <div className="avatar">{user.name[0].toUpperCase()}</div>
+                        <span>{user.name}</span>
+                        </div>
+                        <button onClick={logout} className="btn">Cerrar Sesión</button>
+                    </div>
+                )}
             </div>
+
         </header>
     )
 }

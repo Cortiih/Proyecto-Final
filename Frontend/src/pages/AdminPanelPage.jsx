@@ -31,8 +31,8 @@ export const AdminPanelPage = () => {
           <ul>
             <li><Link to="/admin/add-hotel">Agregar Producto</Link></li>
             <li><Link to="/admin/hotel-list">Lista de Productos</Link></li>
-            <li><Link to="/admin/reservas">Gestionar Reservas</Link></li>
-            <li><Link to="/admin/reportes">Ver Reportes</Link></li>
+            <li><Link to="/admin/features">Administrar Caracteristicas</Link></li>
+            <li><Link to="/admin/add-categories">Agregar Categoria</Link></li>
           </ul>
         </nav>
       </div>

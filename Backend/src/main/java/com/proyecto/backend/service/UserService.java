@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -41,6 +42,35 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    // login
+    public User login(String email, String password) {
+        return userRepository.findByEmail(email)
+                .filter(user -> user.getPassword().equals(password))
+                .orElseThrow(() -> new RuntimeException("Email o contraseña incorrectos"));
+    }
+
+    //dar permisos
+    public User makeAdmin(Integer userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        User user = userOpt.get();
+        user.setAdmin(true);
+        return userRepository.save(user);
+    }
+
+    //sacar permisos
+    public User removeAdmin(Integer userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+        User user = userOpt.get();
+        user.setAdmin(false);
+        return userRepository.save(user);
     }
 }
 

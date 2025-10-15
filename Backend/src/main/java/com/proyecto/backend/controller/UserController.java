@@ -29,4 +29,26 @@ public class UserController {
     public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok(userService.findAll());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            User logged = userService.login(user.getEmail(), user.getPassword());
+            return ResponseEntity.ok(logged);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
+    }
+
+    //hacer administrador
+    @PutMapping("/{id}/make-admin")
+    public ResponseEntity<User> makeAdmin(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.makeAdmin(id));
+    }
+
+    //sacar administrador
+    @PutMapping("/{id}/remove-admin")
+    public ResponseEntity<User> removeAdmin(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.removeAdmin(id));
+    }
 }

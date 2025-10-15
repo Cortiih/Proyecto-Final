@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { data, useNavigate, useParams } from 'react-router-dom'
 import "./HotelDetail.css"
 import { FaArrowLeft } from 'react-icons/fa';
+import { FaWifi, FaCar, FaSnowflake } from 'react-icons/fa'; 
+
 
 export const HotelDetailPage = () => {
 
@@ -10,6 +12,13 @@ export const HotelDetailPage = () => {
     const [hotel, setHotel] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const iconMap = {
+        "fa-wifi": <FaWifi />,
+        "fa-car": <FaCar />,
+        "fa-snowflake": <FaSnowflake />,
+        
+    };
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/hotels/${id}`)
@@ -89,8 +98,24 @@ export const HotelDetailPage = () => {
             <p>Ubicación: {hotel.location || "Ubicación no disponible"}</p>
             <p>Estrellas: {hotel.stars}</p>
             <p>Precio por noche: ${hotel.pricePerNight || "No disponible"}</p>
-            <p>Categoría: {hotel.category || "Sin categoría"}</p>
+            <p>Categoría: {hotel.category?.name || "Sin categoría"}</p>
 
+
+            <div className="features-block">
+                <h2>Características</h2>
+                <div className="features-list">
+                    {hotel.features && hotel.features.length > 0 ? (
+                        hotel.features.map((feature) => (
+                            <div key={feature.id} className="feature-item">
+                                {iconMap[feature.icon] || <FaWifi />}
+                                <span>{feature.name}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Este hotel no tiene características registradas.</p>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
