@@ -67,19 +67,19 @@ public class BackendApplication {
                 featureRepository.save(televisor);
                 featureRepository.save(mascotas);
 
-                System.out.println("✅ Características iniciales cargadas correctamente");
+                System.out.println("Características iniciales cargadas correctamente");
             } else {
-                System.out.println("ℹ️ Las características ya estaban cargadas, no se agregaron duplicados");
+                System.out.println("Las características ya estaban cargadas, no se agregaron duplicados");
             }
         };
     }
 
-
-
+    
     // CommandLineRunner para inicializar hoteles automáticamente
     @Bean
-    public CommandLineRunner initDatabase(HotelService hotelService) {
+    public CommandLineRunner initDatabase(HotelService hotelService, CategoryRepository categoryRepository) {
         return args -> {
+
             hotelService.saveHotel(new Hotel(
 
                     "Hotel Sol",
@@ -94,7 +94,8 @@ public class BackendApplication {
                             "https://images.pexels.com/photos/11042879/pexels-photo-11042879.jpeg?_gl=1*1hjr15v*_ga*MzAzMzg5NTUwLjE3NTc2Mjk2ODE.*_ga_8JE65Q40S6*czE3NTc2Mjk2ODEkbzEkZzEkdDE3NTc2MzAyMjckajIyJGwwJGgw"
                     )
 
-            ));
+            )
+            );
 
             hotelService.saveHotel(new Hotel(
 

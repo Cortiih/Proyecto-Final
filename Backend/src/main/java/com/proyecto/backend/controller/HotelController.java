@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -59,6 +60,14 @@ public class HotelController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return hotelService.delete(id);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Hotel>> getHotelsByCategory(@RequestParam(required = false) Long categoryId) {
+        List<Hotel> hotels = hotelService.getHotelsByCategory(categoryId);
+        return ResponseEntity.ok(hotels);
+    }
+
+
 }
 
 

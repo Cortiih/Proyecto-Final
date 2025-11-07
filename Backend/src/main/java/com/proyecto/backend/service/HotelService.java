@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,4 +86,13 @@ public class HotelService {
     public ResponseEntity<?> findByCategoryName(String categoryName) {
         var hotels = hotelRepository.findByCategory_Name(categoryName);
         return ResponseEntity.ok(hotels);}
+
+    public List<Hotel> getHotelsByCategory(Long categoryId) {
+        if (categoryId != null) {
+            return hotelRepository.findByCategory_Id(categoryId);
+        }
+        return hotelRepository.findAll();
+    }
+
+
 }

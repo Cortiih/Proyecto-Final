@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { data, useNavigate, useParams } from 'react-router-dom'
 import "./HotelDetail.css"
 import { FaArrowLeft } from 'react-icons/fa';
-import { FaWifi, FaCar, FaSnowflake } from 'react-icons/fa'; 
+import { FaWifi, FaCar, FaSnowflake } from 'react-icons/fa';
+import { HotelPolicies } from '../components/HotelPolicies';
 
 
 export const HotelDetailPage = () => {
@@ -12,22 +13,55 @@ export const HotelDetailPage = () => {
     const [hotel, setHotel] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [reservas, setReservas] = useState([]);
+    const [error, setError] = useState(null);
+    const [fechaInicio, setFechaInicio] = useState("");
+    const [fechaFin, setFechaFin] = useState("");
 
     const iconMap = {
         "fa-wifi": <FaWifi />,
         "fa-car": <FaCar />,
         "fa-snowflake": <FaSnowflake />,
-        
+
     };
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/hotels/${id}`)
             .then(res => res.json())
             .then(data => setHotel(data))
-            .catch(err => console.log(err));
-    }, [id])
+            .catch(() => setError("No se pudo cargar la información del hotel."));
+    }, [id]);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/reservas/hotel/${id}`)
+            .then(res => {
+                if (!res.ok) throw new Error();
+                return res.json();
+            })
+            .then(data => setReservas(data))
+            .catch(() => setError("No se pudo obtener la disponibilidad."));
+    }, [id]);
+
+    if (error) {
+        return (
+            <div className="error-box">
+                <p>{error}</p>
+                <button onClick={() => window.location.reload()}>Reintentar</button>
+            </div>
+        );
+    }
 
     if (!hotel) return <p>Cargando...</p>;
+
+
+    const estaOcupada = (fecha) => {
+        const f = new Date(fecha);
+        return reservas.some(r => {
+            const inicio = new Date(r.startDate);
+            const fin = new Date(r.endDate);
+            return f >= inicio && f <= fin;
+        });
+    };
 
 
     return (
@@ -116,6 +150,44 @@ export const HotelDetailPage = () => {
                     )}
                 </div>
             </div>
+
+            <div className="availability-block">
+                <h2>Disponibilidad</h2>
+                <p>Seleccione un rango de fechas:</p>
+
+                <div className="date-inputs">
+                    <label>Fecha de inicio:</label>
+                    <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} />
+
+                    <label>Fecha de fin:</label>
+                    <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} />
+                </div>
+
+                {fechaInicio && fechaFin && (
+                    <div className="availability-result">
+                        {estaOcupada(fechaInicio) || estaOcupada(fechaFin)
+                            ? <p className="unavailable">Algunas fechas no están disponibles</p>
+                            : <p className="available">Fechas disponibles</p>}
+                    </div>
+                )}
+
+                
+                <div className="occupied-list">
+                    <h4>Fechas ocupadas:</h4>
+                    {reservas.length > 0 ? (
+                        reservas.map((r, i) => (
+                            <p key={i}>
+                                Del <strong>{r.startDate}</strong> al <strong>{r.endDate}</strong>
+                            </p>
+                        ))
+                    ) : (
+                        <p>No hay reservas en este momento.</p>
+                    )}
+                </div>
+            </div>
+
+            <HotelPolicies />
+
         </div>
     )
 }

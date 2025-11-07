@@ -14,12 +14,21 @@
   background-color: #683b1f;
   min-height: 150px;
   height: auto;
+  padding-bottom: 20px;
 }
 
 .search-section h2 {
   font-size: 30px;
   margin-bottom: 20px;
   color: white;
+}
+
+.search-section p {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-align: center;
+  max-width: 600px;
 }
 
 .search-box {
@@ -34,6 +43,13 @@ input[type="text"] {
   border-radius: 5px;
 }
 
+.date-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 150px;
+}
+
 .search-btn {
   padding: 10px 20px;
   background-color: rgb(139, 139, 92);
@@ -45,8 +61,8 @@ input[type="text"] {
   transition: 0.5s all ease;
 }
 
-button:hover {
-  background-color: rgb(170, 170, 145);
+.search-btn:hover {
+  background-color: rgb(148, 148, 109);
 }
 
 /*Categorias*/
@@ -106,7 +122,7 @@ button:hover {
   border-radius: 16px;
   padding: 25px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .categories-filter h2 {
@@ -165,6 +181,32 @@ button:hover {
   margin-bottom: 30px;
   color: black;
   font-size: 26px;
+  flex: 1;
+}
+
+.recommendations-header {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  position: relative; 
+  margin-bottom: 25px;
+  padding: 0 20px;
+}
+
+.favorites-link {
+  position: absolute;
+  right: 20px; 
+  background-color: #683b1f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.favorites-link:hover {
+  background-color:#86573a;
 }
 
 .recommendations-grid {
@@ -181,18 +223,19 @@ button:hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: left;
   display: flex;
-  transition: transform 0.3s ease;
   cursor: pointer;
   flex-direction: row;
   text-decoration: none;
   color: inherit;
+  position: relative;
 }
 
 .hotel-info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   padding: 10px;
+  
 }
 
 .recommendation-card img {
@@ -266,10 +309,24 @@ button:hover {
 }
 
 
-.recommendations-grid {
-  grid-template-columns: repeat(2, 1fr);
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
+.favorite-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 1);
+}
 
 @media (max-width: 1024px) {
   .recommendations-grid {
@@ -325,6 +382,13 @@ button:hover {
     max-width: 300px;
   }
 
+  .date-input {
+    width: 45%;
+    min-width: 130px;
+    font-size: 14px;
+  }
+
+
   .search-btn {
     flex-shrink: 0;
     padding: 10px 16px;
@@ -342,7 +406,7 @@ button:hover {
   }
 
   /*filter*/
- .categories-filter {
+  .categories-filter {
     padding: 15px;
   }
 
@@ -370,35 +434,54 @@ button:hover {
   }
 
   /* recomendaciones */
+  .recommendations-header {
+    
+    align-items: center;
+    justify-content: center;
+    position: static;
+    gap: 10px;
+  }
+
+  .recommendations-header h2 {
+    font-size: 22px;
+  }
+
+  .favorites-link {
+    position: static;
+    margin-top: 5px;
+    padding: 7px 14px;
+    font-size: 14px;
+  }
+
   .recommendations-grid {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 20px;
     padding: 0 10px;
   }
 
   .recommendation-card {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: stretch;
   }
 
   .recommendation-card img {
     width: 100%;
-    height: 200px;     
-    border-radius: 12px 12px 0 0; 
+    height: 200px;
+    border-radius: 12px 12px 0 0;
   }
 
   .hotel-info {
-    padding: 10px 8px; 
+    padding: 10px 8px;
     gap: 4px;
   }
 
   .recommendation-card h3 {
-    font-size: 16px;    
+    font-size: 16px;
     margin: 8px 0 4px;
   }
 
   .recommendation-card p {
-    font-size: 13px;   
+    font-size: 13px;
     margin: 4px 0;
   }
 }
@@ -407,7 +490,20 @@ button:hover {
 @media (max-width: 430px) {
   .search-section h2 {
     font-size: 18px;
+    margin-top: 25px;
   }
+
+  .search-section p {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .date-input {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px;
+  }
+
 
   .category-card img {
     width: 90px;
@@ -429,7 +525,7 @@ button:hover {
   }
 
   .categories-grid {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 8px;
   }
 
@@ -449,6 +545,24 @@ button:hover {
     font-size: 13px;
   }
 
+  .recommendations-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+
+  .recommendations-header h2 {
+    font-size: 20px;
+  }
+
+  .favorites-link {
+    position: static;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 15px;
+  }
+
   .recommendation-card h3 {
     font-size: 16px;
   }
@@ -462,14 +576,13 @@ button:hover {
   }
 
   .pagination {
-    flex-wrap: wrap;  
-    gap: 4px;          
+    flex-wrap: wrap;
+    gap: 4px;
     justify-content: center;
   }
 
   .pagination button {
-    padding: 6px 10px; 
-    font-size: 12px; 
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }
-

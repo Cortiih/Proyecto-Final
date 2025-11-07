@@ -12,8 +12,8 @@ public class Reserva {
     private Long id;
 
     private String nombreCliente;
-    private LocalDate fechaEntrada;
-    private LocalDate fechaSalida;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
@@ -40,19 +40,27 @@ public class Reserva {
         this.nombreCliente = nombreCliente;
     }
 
-    public LocalDate getFechaEntrada() {
-        return fechaEntrada;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setFechaEntrada(LocalDate fechaEntrada) {
-        this.fechaEntrada = fechaEntrada;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDate getFechaSalida() {
-        return fechaSalida;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setFechaSalida(LocalDate fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

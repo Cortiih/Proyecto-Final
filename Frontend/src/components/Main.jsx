@@ -3,16 +3,22 @@ import React, { useEffect, useState } from 'react'
 import "./Main.css"
 import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
 
 
 export const Main = () => {
 
   const [hotels, setHotels] = useState([]);
   const [filteredHotels, setFilteredHotels] = useState([]);
-  const [categories] = useState(["Hotel", "Cabaña", "Departamento"]);
+  const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchText, setSearchText] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:8080/api/hotels')
@@ -27,41 +33,162 @@ export const Main = () => {
   }, [page]);
 
 
+  useEffect(() => {
+    fetch("http://localhost:8080/api/categories")
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(err => console.error("Error cargando categorías:", err));
+  }, []);
+
+
 
   useEffect(() => {
     if (selectedCategories.length === 0) {
-      setFilteredHotels(hotels);
+      // Si no hay filtros, muestro todos
+      fetch(`http://localhost:8080/api/hotels?page=${page}`)
+        .then(res => res.json())
+        .then(data => {
+          setHotels(data.content);
+          setFilteredHotels(data.content);
+          setTotalPages(data.totalPages);
+        })
+        .catch(err => console.error(err));
     } else {
-      setFilteredHotels(
-        hotels.filter(hotel =>
-          selectedCategories.includes(hotel.category?.name)
-        )
-      );
-    }
-  }, [selectedCategories, hotels]);
 
-  const toggleCategory = (category) => {
+      const categoryId = selectedCategories[0]; // una sola por ahora
+      fetch(`http://localhost:8080/api/hotels/filter?categoryId=${categoryId}`)
+        .then(res => res.json())
+        .then(data => {
+          setFilteredHotels(data);
+          setTotalPages(1);
+        })
+        .catch(err => console.error("Error filtrando hoteles:", err));
+    }
+  }, [selectedCategories, page]);
+
+
+
+  const toggleCategory = (categoryId) => {
     setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [categoryId]
     );
   };
 
   const clearFilters = () => setSelectedCategories([]);
+
+  const handleSearch = () => {
+    const filtered = hotels.filter((hotel) => {
+      const matchText =
+        hotel.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        hotel.location?.toLowerCase().includes(searchText.toLowerCase());
+
+      // si no hay fechas, solo filtra por texto
+      if (!startDate || !endDate) return matchText;
+
+      const checkIn = new Date(startDate);
+      const checkOut = new Date(endDate);
+      const today = new Date();
+
+
+      const available = checkIn >= today && checkOut > checkIn;
+
+      return matchText && available;
+    });
+
+    setFilteredHotels(filtered);
+  };
+
+
+  const user = JSON.parse(localStorage.getItem("user")) || null;
+
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchFavorites = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/users/${user.id}/favorites`, {
+          headers: {
+            "Authorization": `Bearer ${user.token}`,
+            "Content-Type": "application/json"
+          }
+        });
+        const data = await res.json();
+        setFavorites(data.map(h => h.id));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchFavorites();
+  }, [user]);
+
+
+  const handleFavorite = async (hotelId) => {
+    if (!user) {
+      alert("Debes iniciar sesión para marcar favoritos");
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/users/${user.id}/favorites/${hotelId}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${user.token}`, // <-- token aquí también
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (res.ok) {
+        setFavorites(prev =>
+          prev.includes(hotelId)
+            ? prev.filter(id => id !== hotelId)
+            : [...prev, hotelId]
+        );
+      } else {
+        console.error("Error al marcar favorito");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
 
   return (
     <main className='main'>
       <section className="search-section">
         <h2>Buscar ofertas en Hoteles y Cabañas</h2>
+        <p>Elegí tus fechas o escribí el nombre del alojamiento que estás buscando.</p>
         <div className='search-box'>
           <input
+            list="suggestions"
             type="text"
             placeholder="Buscar hoteles..."
             className="search-input"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
           />
-          <button className="search-btn">Buscar</button>
+
+          <datalist id="suggestions">
+            {hotels.map((h) => (
+              <option key={h.id} value={h.name} />
+            ))}
+          </datalist>
+
+          <input
+            type="date"
+            className="date-input"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <input
+            type="date"
+            className="date-input"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+          <button className="search-btn" onClick={handleSearch}>Buscar</button>
         </div>
       </section>
 
@@ -83,17 +210,16 @@ export const Main = () => {
         </div>
       </section>
 
-      {/* 🔹 Sección de filtrado funcional */}
       <section className="categories-filter">
         <h2>Filtrar por categoría</h2>
         <div className="categories-grid">
           {categories.map(category => (
             <button
-              key={category}
-              className={`category-btn ${selectedCategories.includes(category) ? 'active' : ''}`}
-              onClick={() => toggleCategory(category)}
+              key={category.id}
+              className={`category-btn ${selectedCategories.includes(category.id) ? 'active' : ''}`}
+              onClick={() => toggleCategory(category.id)}
             >
-              {category}
+              {category.name}
             </button>
           ))}
         </div>
@@ -111,22 +237,44 @@ export const Main = () => {
 
 
       <section className="recommendations">
-        <h2>Recomendaciones</h2>
+        <div className="recommendations-header">
+          <h2>Recomendaciones</h2>
+          {user && (
+            <Link to="/favorites" className="favorites-link">
+              Mis Favoritos
+            </Link>
+          )}
+        </div>
+
         <div className="recommendations-grid">
           {filteredHotels.map(hotel => (
-            <Link to={`/hotel/${hotel.id}`} className="recommendation-card" key={hotel.id}>
-              <img src={hotel.images[0]} alt={hotel.name} />
-              <div className='hotel-info'>
-                <h3>{hotel.name}</h3>
-                <p><FaMapMarkerAlt color="#683b1f" /> {hotel.location}</p>
-                <p>{Array.from({ length: hotel.stars }).map((_, i) => (
-                  <FaStar key={i} color="gold" />
-                ))}</p>
-                <p>${hotel.pricePerNight} / noche</p>
+            <div className="recommendation-card" key={hotel.id}>
+              <div className="favorite-btn" onClick={() => handleFavorite(hotel.id)}>
+                {favorites.includes(hotel.id)
+                  ? <FaHeart color="#e63946" size={22} />
+                  : <FaRegHeart color="#555" size={22} />}
               </div>
-            </Link>
+
+              {/* Imagen a la izquierda */}
+              <img src={hotel.images[0]} alt={hotel.name} />
+
+              {/* Info a la derecha */}
+              <div className="hotel-info">
+                <Link to={`/hotel/${hotel.id}`} className="recommendation-link">
+                  <h3>{hotel.name}</h3>
+                  <p><FaMapMarkerAlt color="#683b1f" /> {hotel.location}</p>
+                  <p>{Array.from({ length: hotel.stars }).map((_, i) => (
+                    <FaStar key={i} color="gold" />
+                  ))}</p>
+                  <p>${hotel.pricePerNight} / noche</p>
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
+
+
+
 
         {/* Paginación */}
         <div className="pagination">

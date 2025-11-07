@@ -12,4 +12,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     Optional<Hotel> findByName(String name);
 
     List<Hotel> findByCategory_Name(String name);
+
+    List<Hotel> findByCategory_Id(Long categoryId);
+
 }

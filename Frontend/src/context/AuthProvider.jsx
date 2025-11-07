@@ -17,8 +17,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
+  const getToken = () => (user ? user.token : null);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, getToken }}>
       {children}
     </AuthContext.Provider>
   );

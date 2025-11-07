@@ -40,4 +40,15 @@ public class ReservaController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return reservaService.delete(id);
     }
+
+    // 🔹 Obtener reservas por hotel
+    @GetMapping("/hotel/{hotelId}")
+    public ResponseEntity<?> obtenerReservasPorHotel(@PathVariable Long hotelId) {
+        try {
+            List<Reserva> reservas = reservaService.obtenerReservasPorHotel(hotelId);
+            return ResponseEntity.ok(reservas);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al obtener las reservas.");
+        }
+    }
 }

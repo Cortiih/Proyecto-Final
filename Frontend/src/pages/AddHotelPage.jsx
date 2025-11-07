@@ -61,8 +61,9 @@ export const AddHotelPage = () => {
                 images,
                 features: selectedFeatures.map(id => ({ id }))
             });
+            
             alert("Producto agregado correctamente!");
-            navigate("/");
+            navigate("/admin/hotel-list");
 
         } catch (error) {
             setError(error.response?.data || "Error al guardar el producto");

@@ -25,7 +25,7 @@ export const EditProductPage = () => {
 
         setName(product.name);
         setDescription(product.description);
-        setCategory(product.category ? hotel.category.id.toString() : '');
+        setCategory(product.category ? product.category.id.toString() : '');
         setImages(product.images || []);
         setSelectedFeatures(product.features?.map(f => f.id) || []);
       } catch (err) {
@@ -67,7 +67,7 @@ export const EditProductPage = () => {
       await axios.put(`http://localhost:8080/api/hotels/${id}`, {
         name,
         description,
-        category: { id: selectedCategory },
+        category: { id: parseInt(category) },
         images,
         features: selectedFeatures.map(id => ({ id }))
       });

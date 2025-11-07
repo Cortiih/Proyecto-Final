@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export const AdminHotelListPage = () => {
   const [hotels, setHotels] = useState([]);
 
-  useEffect(() => {
+  const fetchHotels = () => {
     fetch("http://localhost:8080/api/hotels")
       .then((res) => res.json())
       .then((data) => {
@@ -14,6 +14,10 @@ export const AdminHotelListPage = () => {
         setHotels(data.content || data);
       })
       .catch((err) => console.error("Error cargando hoteles:", err));
+  };
+
+  useEffect(() => {
+    fetchHotels();
   }, []);
 
   const handleDelete = (id) => {

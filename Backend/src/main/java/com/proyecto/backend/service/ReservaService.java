@@ -41,4 +41,8 @@ public class ReservaService {
         reservaRepository.deleteById(id);
         return ResponseEntity.ok("Reserva eliminada con éxito");
     }
+
+    public List<Reserva> obtenerReservasPorHotel(Long hotelId) {
+        return reservaRepository.findByHotelId(hotelId);
+    }
 }

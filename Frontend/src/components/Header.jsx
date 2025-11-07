@@ -7,7 +7,6 @@ import { useAuth } from "../context/AuthProvider";
 export const Header = () => {
 
     const { user, logout } = useAuth();
-
     const location = useLocation();
 
     // Si estoy en /product/:id => oculto este header
@@ -41,9 +40,19 @@ export const Header = () => {
                     // Si hay usuario logueado
                     <div className="user-info">
                         <div className="avatar-name">
-                        <div className="avatar">{user.name[0].toUpperCase()}</div>
-                        <span>{user.name}</span>
+                            <div className="avatar">{user.name[0].toUpperCase()}</div>
+                            <span>{user.name}</span>
                         </div>
+
+
+                        {user.admin && (
+                            <Link to="/admin">
+                                <button className="btn admin-btn" type="button">
+                                    Panel Admin
+                                </button>
+                            </Link>
+                        )}
+
                         <button onClick={logout} className="btn">Cerrar Sesión</button>
                     </div>
                 )}

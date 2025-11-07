@@ -13,6 +13,8 @@ import { LoginPage } from "./pages/LoginPage"
 import { AdminUsersPage } from "./pages/AdminUserPage"
 import { AdminFeaturesPage } from "./pages/AdminFeaturesPage"
 import { AdminAddCategory } from "./pages/AdminAddCategory"
+import { AdminRoute } from "./context/AdminRoute"
+import { FavoritesPage } from "./pages/FavoritesPage"
 
 function App() {
     return(
@@ -31,6 +33,9 @@ function App() {
         <Route path="/admin/users" element={<AdminUsersPage/>} />
         <Route path="/admin/features" element={<AdminFeaturesPage/>} />
         <Route path="/admin/add-categories" element={<AdminAddCategory/>} />
+        <Route path="/admin" element={<AdminRoute><AdminPanelPage /></AdminRoute>} />
+        <Route path="/favorites" element={<FavoritesPage/>} />
+
       </Routes>
       <Footer/>
       </BrowserRouter>

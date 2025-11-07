@@ -13,10 +13,26 @@ export const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+            setError("Todos los campos son obligatorios");
+            return;
+        }
+        if (!email.includes("@")) {
+            setError("El correo electrónico no es válido");
+            return;
+        }
+        if (password.length < 6) {
+            setError("La contraseña debe tener al menos 6 caracteres");
+            return;
+        }
+
+        setError("");
+
     try {
       const res = await axios.post("http://localhost:8080/api/users/login", {
         email,
-        password,
+        password
       });
 
       login(res.data); 
