@@ -74,7 +74,7 @@ public class BackendApplication {
         };
     }
 
-    
+
     // CommandLineRunner para inicializar hoteles automáticamente
     @Bean
     public CommandLineRunner initDatabase(HotelService hotelService, CategoryRepository categoryRepository) {

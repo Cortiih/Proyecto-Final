@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import "./AdminAddCategory.css"
+import { useAuth } from '../context/AuthProvider';
 
 
 export const AdminAddCategory = () => {
 
+    const { user } = useAuth();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name || !description || !imageUrl) {
@@ -19,29 +21,38 @@ export const AdminAddCategory = () => {
             return;
         }
 
+        if (!user || !user.token) {
+            setErrorMessage("Debes iniciar sesión como administrador para crear una categoría");
+            setSuccessMessage("");
+            return;
+        }
+
         const newCategory = { name, description, imageUrl };
 
-        fetch("http://localhost:8080/api/categories", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newCategory),
-        })
-            .then((res) => {
-                if (!res.ok) throw new Error("Error al crear la categoría");
-                return res.json();
-            })
-            .then(() => {
-                setSuccessMessage("Categoría creada con éxito");
-                setErrorMessage("");
-                setName("");
-                setDescription("");
-                setImageUrl("");
-            })
-            .catch((err) => {
-                console.error(err);
-                setErrorMessage("Hubo un problema al guardar la categoría");
+        try {
+            const res = await fetch("http://localhost:8080/api/categories", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}` 
+                },
+                body: JSON.stringify(newCategory),
             });
-    };
+
+            if (!res.ok) throw new Error("Error al crear la categoría");
+
+            const data = await res.json();
+            setSuccessMessage("Categoría creada con éxito");
+            setErrorMessage("");
+            setName("");
+            setDescription("");
+            setImageUrl("");
+        } catch (err) {
+            console.error(err);
+            setErrorMessage("Hubo un problema al guardar la categoría");
+            setSuccessMessage("");
+        }
+    }
 
     return (
         <div className='add-category'>

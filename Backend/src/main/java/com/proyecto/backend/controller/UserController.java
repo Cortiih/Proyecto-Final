@@ -77,18 +77,23 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("/{userId}/favorites/{hotelId}")
-    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
-    public ResponseEntity<String> toggleFavorite(
-            @PathVariable Long userId,
-            @PathVariable Long hotelId) {
+    public ResponseEntity<String> toggleFavorite(@PathVariable Long userId, @PathVariable Long hotelId) {
         userService.toggleFavorite(userId, hotelId);
         return ResponseEntity.ok("Favorito actualizado correctamente");
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{userId}/favorites")
-    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     public ResponseEntity<Set<Hotel>> getFavorites(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getFavorites(userId));
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @DeleteMapping("/{userId}/favorites/{hotelId}")
+    public ResponseEntity<String> removeFavorite(@PathVariable Long userId, @PathVariable Long hotelId) {
+        userService.removeFavorite(userId, hotelId);
+        return ResponseEntity.ok("Favorito eliminado correctamente");
     }
 }

@@ -124,6 +124,24 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
+
+    public void removeFavorite(Long userId, Long hotelId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<Hotel> optionalHotel = hotelRepository.findById(hotelId);
+
+        if (optionalUser.isPresent() && optionalHotel.isPresent()) {
+            User user = optionalUser.get();
+            Hotel hotel = optionalHotel.get();
+
+            if (user.getFavorites().contains(hotel)) {
+                user.getFavorites().remove(hotel);
+                userRepository.save(user);
+            }
+        } else {
+            throw new RuntimeException("Usuario o hotel no encontrado");
+        }
+    }
+
 }
 
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { data, useNavigate, useParams } from 'react-router-dom'
 import "./HotelDetail.css"
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaShareAlt } from 'react-icons/fa';
 import { FaWifi, FaCar, FaSnowflake } from 'react-icons/fa';
 import { HotelPolicies } from '../components/HotelPolicies';
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { HotelRating } from './HotelRating';
 
 
 export const HotelDetailPage = () => {
@@ -17,6 +19,9 @@ export const HotelDetailPage = () => {
     const [error, setError] = useState(null);
     const [fechaInicio, setFechaInicio] = useState("");
     const [fechaFin, setFechaFin] = useState("");
+
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const [shareMessage, setShareMessage] = useState("");
 
     const iconMap = {
         "fa-wifi": <FaWifi />,
@@ -77,6 +82,9 @@ export const HotelDetailPage = () => {
                     <>
                         <div className="main-image">
                             <img src={hotel.images[0]} alt={hotel.name} />
+                            <div className="share-btn-overlay" onClick={() => setIsShareOpen(true)}>
+                                <FaShareAlt size={20} />
+                            </div>
                         </div>
 
                         <div className="side-images">
@@ -128,6 +136,46 @@ export const HotelDetailPage = () => {
                 </div>
             )}
 
+            {isShareOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content share-modal">
+                        <button className="close-btn" onClick={() => setIsShareOpen(false)}>✖</button>
+                        <h3>Compartir {hotel.name}</h3>
+                        <img src={hotel.images[0]} alt={hotel.name} className="share-image" />
+                        <p className="share-description">
+                            {hotel.description
+                                ? hotel.description.length > 100
+                                    ? hotel.description.substring(0, 100) + "..."
+                                    : hotel.description
+                                : "No hay descripcion disponible."}
+                        </p>
+                        <textarea
+                            placeholder="Agrega un mensaje personalizado..."
+                            value={shareMessage}
+                            onChange={(e) => setShareMessage(e.target.value)}
+                            rows={3}
+                        />
+                        <div className="share-buttons">
+                            <a
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(shareMessage)}`}
+                                target="_blank" rel="noopener noreferrer"
+                            ><FaFacebook size={25} /> Facebook</a>
+
+                            <a
+                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareMessage)}`}
+                                target="_blank" rel="noopener noreferrer"
+                            ><FaTwitter size={25} /> Twitter</a>
+
+                            <a
+                                href={`https://www.instagram.com/?url=${encodeURIComponent(window.location.href)}`}
+                                target="_blank" rel="noopener noreferrer"
+                            ><FaInstagram size={25} /> Instagram</a>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
             <p className="product-description">{hotel.description || "Descripción no disponible."}</p>
             <p>Ubicación: {hotel.location || "Ubicación no disponible"}</p>
             <p>Estrellas: {hotel.stars}</p>
@@ -171,7 +219,7 @@ export const HotelDetailPage = () => {
                     </div>
                 )}
 
-                
+
                 <div className="occupied-list">
                     <h4>Fechas ocupadas:</h4>
                     {reservas.length > 0 ? (
@@ -187,6 +235,8 @@ export const HotelDetailPage = () => {
             </div>
 
             <HotelPolicies />
+
+            <HotelRating hotelId={hotel.id} />
 
         </div>
     )

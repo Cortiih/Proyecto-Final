@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import "./AddHotelPage.css";
+import { useAuth } from '../context/AuthProvider';
 
 export const EditProductPage = () => {
   const { id } = useParams();
@@ -11,11 +12,17 @@ export const EditProductPage = () => {
   const [category, setCategory] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+   const [categories, setCategories] = useState([]);
 
   const [features, setFeatures] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const { getToken } = useAuth();
 
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/categories")
+      .then(res => setCategories(res.data))
+      .catch(err => console.error("Error cargando categorías:", err));
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -63,22 +70,34 @@ export const EditProductPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const token = getToken();
+
     try {
-      await axios.put(`http://localhost:8080/api/hotels/${id}`, {
-        name,
-        description,
-        category: { id: parseInt(category) },
-        images,
-        features: selectedFeatures.map(id => ({ id }))
-      });
+      await axios.put(
+        `http://localhost:8080/api/hotels/${id}`,
+        {
+          name,
+          description,
+          category: { id: parseInt(category) },
+          images,
+          features: selectedFeatures.map(id => ({ id }))
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       alert("Producto actualizado correctamente!");
       navigate("/admin/hotel-list");
+
     } catch (err) {
       console.error(err);
       setError("Error al actualizar el producto.");
     }
-  };
+  }
+
 
   return (
     <div className="edit-product">
@@ -105,9 +124,12 @@ export const EditProductPage = () => {
 
           <label>Categoría</label>
           <select value={category} onChange={e => setCategory(e.target.value)} required>
-            <option value="1">Hotel</option>
-            <option value="2">Cabaña</option>
-            <option value="3">Departamento</option>
+            <option value="">Seleccionar categoría</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id.toString()}>
+                {cat.name}
+              </option>
+            ))}
           </select>
 
           <label>Imágenes</label>
@@ -141,4 +163,4 @@ export const EditProductPage = () => {
       </div>
     </div>
   );
-};
+}

@@ -5,22 +5,35 @@ import { useAuth } from "../context/AuthProvider";
 import "./FavoritesPage.css";
 
 export const FavoritesPage = () => {
-  const { user } = useAuth();
+  const { user, getToken } = useAuth();
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:8080/api/users/${user.id}/favorites`)
-        .then((res) => res.json())
+      fetch(`http://localhost:8080/api/users/${user.id}/favorites`, {
+        headers: {
+          "Authorization": `Bearer ${getToken()}`,
+          "Content-Type": "application/json"
+        }
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Error al obtener favoritos");
+          return res.json();
+        })
         .then((data) => setFavorites(data))
         .catch((err) => console.error("Error cargando favoritos:", err));
     }
   }, [user]);
 
+
   const removeFavorite = async (hotelId) => {
     try {
       const res = await fetch(`http://localhost:8080/api/users/${user.id}/favorites/${hotelId}`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "Content-Type": "application/json"
+        }
       });
       if (res.ok) {
         setFavorites((prev) => prev.filter((h) => h.id !== hotelId));
@@ -29,6 +42,7 @@ export const FavoritesPage = () => {
       console.error("Error al eliminar favorito:", err);
     }
   };
+
 
   if (!user) {
     return <p style={{ textAlign: "center" }}>Inicia sesión para ver tus favoritos</p>;

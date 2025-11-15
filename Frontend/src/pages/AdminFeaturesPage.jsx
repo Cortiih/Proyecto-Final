@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminFeaturesPage.css";
+import { useAuth } from "../context/AuthProvider";
 
 export const AdminFeaturesPage = () => {
     const [features, setFeatures] = useState([]);
     const [name, setName] = useState("");
     const [icon, setIcon] = useState("");
     const [editing, setEditing] = useState(null);
+    const { getToken } = useAuth();
 
     const fetchFeatures = async () => {
         const res = await axios.get("http://localhost:8080/api/features");
@@ -19,10 +21,21 @@ export const AdminFeaturesPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const token = getToken();
         if (editing) {
-            await axios.put(`http://localhost:8080/api/features/${editing}`, { name, icon });
+            await axios.put(`http://localhost:8080/api/features/${editing}`, { name, icon },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
         } else {
-            await axios.post("http://localhost:8080/api/features", { name, icon });
+            await axios.post("http://localhost:8080/api/features", { name, icon },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
         }
         setName("");
         setIcon("");
@@ -31,8 +44,14 @@ export const AdminFeaturesPage = () => {
     };
 
     const handleDelete = async (id) => {
+        const token = getToken();
         if (confirm("¿Eliminar característica?")) {
-            await axios.delete(`http://localhost:8080/api/features/${id}`);
+            await axios.delete(`http://localhost:8080/api/features/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
             fetchFeatures();
         }
     };

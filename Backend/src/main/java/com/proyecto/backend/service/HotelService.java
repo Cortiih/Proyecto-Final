@@ -94,5 +94,10 @@ public class HotelService {
         return hotelRepository.findAll();
     }
 
+    public List<Hotel> getAllHotels() {
+        return hotelRepository.findAll();
+    }
+
+
 
 }

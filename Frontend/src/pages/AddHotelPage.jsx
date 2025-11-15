@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import "./AddHotelPage.css"
 import axios from 'axios';
+import { useAuth } from '../context/AuthProvider';
 
 export const AddHotelPage = () => {
 
@@ -19,6 +20,8 @@ export const AddHotelPage = () => {
 
     const [features, setFeatures] = useState([]);
     const [selectedFeatures, setSelectedFeatures] = useState([]);
+    const { getToken } = useAuth();
+
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/categories")
@@ -49,9 +52,14 @@ export const AddHotelPage = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post("http://localhost:8080/api/hotels/add", {
+    e.preventDefault();
+
+    const token = getToken();
+
+    try {
+        const res = await axios.post(
+            "http://localhost:8080/api/hotels/add",
+            {
                 name,
                 description,
                 location,
@@ -60,15 +68,19 @@ export const AddHotelPage = () => {
                 category: { id: categoryId },
                 images,
                 features: selectedFeatures.map(id => ({ id }))
-            });
-            
-            alert("Producto agregado correctamente!");
-            navigate("/admin/hotel-list");
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        alert("Producto agregado correctamente!");
+        navigate("/admin/hotel-list");
 
-        } catch (error) {
-            setError(error.response?.data || "Error al guardar el producto");
-        }
+    } catch (error) {
+        setError(error.response?.data || "Error al guardar el producto");
     }
+}
 
     return (
         <div className='add-product'>

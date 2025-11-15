@@ -7,27 +7,30 @@ import "./LoginPage.css";
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!email) newErrors.email = "El correo es obligatorio";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      newErrors.email = "Correo inválido";
+
+    if (!password) newErrors.password = "La contraseña es obligatoria";
+    else if (password.length < 6)
+      newErrors.password = "La contraseña debe tener al menos 6 caracteres";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; 
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-            setError("Todos los campos son obligatorios");
-            return;
-        }
-        if (!email.includes("@")) {
-            setError("El correo electrónico no es válido");
-            return;
-        }
-        if (password.length < 6) {
-            setError("La contraseña debe tener al menos 6 caracteres");
-            return;
-        }
-
-        setError("");
+    if (!validate()) return;
 
     try {
       const res = await axios.post("http://localhost:8080/api/users/login", {
@@ -38,7 +41,7 @@ export const LoginPage = () => {
       login(res.data); 
       navigate("/");   
     } catch (err) {
-      setError(err.response?.data || "Error al iniciar sesión");
+      setErrors(err.response?.data || "Error al iniciar sesión");
     }
   };
 
@@ -46,26 +49,31 @@ export const LoginPage = () => {
     <div className="login-container">
       <div className="login-card">
         <h2>Iniciar Sesión</h2>
-        {error && <p className="error-msg">{error}</p>}
+        {errors.general && <p className="error-msg">{errors.general}</p>}
+
         <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
+          {errors.email && <p className="error-msg">{errors.email}</p>}
+
           <input
             type="password"
             placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
-          <button className="login-btn" type="submit">Ingresar</button>
+          {errors.password && <p className="error-msg">{errors.password}</p>}
+
+          <button className="login-btn" type="submit">
+            Ingresar
+          </button>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./AdminHotelListPage.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
 
 export const AdminHotelListPage = () => {
   const [hotels, setHotels] = useState([]);
+  const { getToken } = useAuth();
+
 
   const fetchHotels = () => {
-    fetch("http://localhost:8080/api/hotels")
+    fetch("http://localhost:8080/api/hotels/all")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Respuesta del backend:", data);
-        setHotels(data.content || data);
+        setHotels(data); 
       })
       .catch((err) => console.error("Error cargando hoteles:", err));
-  };
+    }
 
   useEffect(() => {
     fetchHotels();
@@ -27,18 +29,23 @@ export const AdminHotelListPage = () => {
 
     if (!confirmDelete) return;
 
+    const token = getToken();
+
     fetch(`http://localhost:8080/api/hotels/${id}`, {
-      method: "DELETE",
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        setHotels(hotels.filter((hotel) => hotel.id !== id));
+        alert("Hotel eliminado con éxito");
+      } else {
+        alert("Error al eliminar el hotel");
+      }
     })
-      .then((res) => {
-        if (res.ok) {
-          setHotels(hotels.filter((hotel) => hotel.id !== id));
-          alert("Hotel eliminado con éxito");
-        } else {
-          alert("Error al eliminar el hotel");
-        }
-      })
-      .catch((err) => console.error("Error eliminando hotel:", err));
+    .catch((err) => console.error("Error eliminando hotel:", err));
   }
 
   return (
@@ -70,4 +77,4 @@ export const AdminHotelListPage = () => {
       </table>
     </div>
   );
-};
+}

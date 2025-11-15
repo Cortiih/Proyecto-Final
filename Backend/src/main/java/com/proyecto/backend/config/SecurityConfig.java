@@ -40,12 +40,20 @@ public class SecurityConfig {
                                 "/api/users/register"
                         ).permitAll()
 
-                        .requestMatchers(
-                                "/api/hotels/**",
+                        .requestMatchers(HttpMethod.GET, "/api/hotels/**",
                                 "/api/categories/**",
                                 "/api/features/**",
-                                "/api/reservas/hotel/**"
-                        ).permitAll()
+                                "/api/ratings/**",
+                                "/api/reservas/hotel/**").permitAll()  
+
+                        .requestMatchers(HttpMethod.POST, "/api/ratings/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/hotels/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/hotels/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/hotels/**").hasRole("ADMIN")
+                        .requestMatchers("/api/features/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

@@ -15,6 +15,8 @@ import { AdminFeaturesPage } from "./pages/AdminFeaturesPage"
 import { AdminAddCategory } from "./pages/AdminAddCategory"
 import { AdminRoute } from "./context/AdminRoute"
 import { FavoritesPage } from "./pages/FavoritesPage"
+import { AdminDeleteCategory } from "./pages/AdminDeleteCategory"
+import { ProtectedRoute } from "./components/ProtectedRoute"
 
 function App() {
     return(
@@ -23,19 +25,21 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/' element={<Main/>}></Route>
-        <Route path='/admin' element={<AdminPanelPage/>}></Route>
-        <Route path='/admin/add-hotel' element={<AddHotelPage/>}></Route>
-        <Route path='/admin/hotel-list' element={<AdminHotelListPage/>} />
-        <Route path="/admin/hotels/edit/:id" element={<EditProductPage />} /> 
         <Route path="/hotel/:id" element={<HotelDetailPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
         <Route path="/login" element={<LoginPage/>} />
-        <Route path="/admin/users" element={<AdminUsersPage/>} />
-        <Route path="/admin/features" element={<AdminFeaturesPage/>} />
-        <Route path="/admin/add-categories" element={<AdminAddCategory/>} />
-        <Route path="/admin" element={<AdminRoute><AdminPanelPage /></AdminRoute>} />
         <Route path="/favorites" element={<FavoritesPage/>} />
 
+        <Route path="/admin" element={<ProtectedRoute adminRequired={true} />}>
+          <Route index element={<AdminPanelPage />} /> {/* /admin */}
+          <Route path="add-hotel" element={<AddHotelPage />} /> {/* /admin/add-hotel */}
+          <Route path="hotel-list" element={<AdminHotelListPage />} /> {/* /admin/hotel-list */}
+          <Route path="hotels/edit/:id" element={<EditProductPage />} /> {/* /admin/hotels/edit/:id */}
+          <Route path="users" element={<AdminUsersPage />} /> {/* /admin/users */}
+          <Route path="features" element={<AdminFeaturesPage />} /> {/* /admin/features */}
+          <Route path="add-categories" element={<AdminAddCategory />} /> {/* /admin/add-categories */}
+          <Route path="categories" element={<AdminDeleteCategory />} /> {/* /admin/categories */}
+        </Route>
       </Routes>
       <Footer/>
       </BrowserRouter>

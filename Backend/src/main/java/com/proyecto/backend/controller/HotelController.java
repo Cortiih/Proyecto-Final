@@ -67,6 +67,10 @@ public class HotelController {
         return ResponseEntity.ok(hotels);
     }
 
+    @GetMapping("/all")
+    public List<Hotel> findAllWithoutPagination() {
+        return hotelService.getAllHotels();
+    }
 
 }
 
