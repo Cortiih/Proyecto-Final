@@ -1,0 +1,145 @@
+.reserva-page {
+  min-height: calc(100vh - 80px);
+  background-color: beige;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.reserva-container {
+  width: 500px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.reserva-page h1 {
+  color: #683b1f;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.reserva-hotel-info {
+  width: 100%;
+  margin-bottom: 25px;
+  background: #fff7e6;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #e8c9a1;
+}
+
+.reserva-hotel-info p {
+  margin: 6px 0;
+  color: #5a3a1a;
+}
+
+.reserva-hotel-images {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 8px;
+}
+
+.small-img {
+  width: 90px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.user-infor {
+  width: 100%;
+  background: #eef5ff;
+  border-left: 4px solid #5a3a1a;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.user-infor h3 {
+  margin-bottom: 10px;
+  color: #5a3a1a;
+}
+
+.user-infor p {
+  margin: 5px 0;
+  color: #5a3a1a;;
+}
+
+.date-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.date-inputs label {
+  margin: 8px 0 4px;
+  font-weight: bold;
+  color: #683b1f;
+}
+
+.date-inputs input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.confirm-reserva-btn {
+  background-color: #683b1f;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.confirm-reserva-btn:hover {
+  background-color: #a05c35;
+}
+
+.reserva-msg {
+  margin-top: 15px;
+  font-weight: bold;
+  color:#e53935; 
+  text-align: center;
+}
+
+.reserva-msg.success {
+  color: #2e7d32; 
+}
+
+.ocupadas {
+  margin-top: 25px;
+  width: 100%;
+}
+
+.ocupadas h3 {
+  color: #683b1f;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.ocupadas p {
+  background: #f8d7da;
+  color: #842029;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  text-align: center;
+}

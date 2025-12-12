@@ -1,5 +1,6 @@
 package com.proyecto.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -17,7 +18,13 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @JsonIgnoreProperties("reservas")
     private Hotel hotel;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("favorites")
+    private User user;
 
     public Reserva (){
 
@@ -62,5 +69,13 @@ public class Reserva {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -6,6 +6,7 @@ import { FaWifi, FaCar, FaSnowflake } from 'react-icons/fa';
 import { HotelPolicies } from '../components/HotelPolicies';
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import { HotelRating } from './HotelRating';
+import { useAuth } from '../context/AuthProvider';
 
 
 export const HotelDetailPage = () => {
@@ -22,6 +23,8 @@ export const HotelDetailPage = () => {
 
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [shareMessage, setShareMessage] = useState("");
+    const { user } = useAuth();
+
 
     const iconMap = {
         "fa-wifi": <FaWifi />,
@@ -237,6 +240,31 @@ export const HotelDetailPage = () => {
             <HotelPolicies />
 
             <HotelRating hotelId={hotel.id} />
+
+
+
+            <div className="reserve-section">
+                <button
+                    className="reserve-btn"
+                    onClick={() => {
+                        if (!user) {
+                            // Redirige al login con mensaje
+                            navigate("/login?fromReserva=true");
+                        } else {
+                            // Redirige a la página de reserva del hotel
+                            navigate(`/reservar/${hotel.id}`, {
+                                state: {
+                                    fechaInicio,
+                                    fechaFin
+                                }
+                            });
+                        }
+                    }}
+                >
+                    Reservar
+                </button>
+            </div>
+
 
         </div>
     )

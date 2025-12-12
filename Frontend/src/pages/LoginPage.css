@@ -57,6 +57,33 @@
   background-color: #5a2e17;
 }
 
+.login-warning {
+  display: flex;
+  align-items: center;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba; 
+  color: #856404; 
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 10px; 
+}
+
+.login-warning-icon {
+  font-size: 20px;
+}
+
+.login-warning p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .error-msg {
   color: red;
   font-size: 13px;

@@ -41,7 +41,6 @@ public class ReservaController {
         return reservaService.delete(id);
     }
 
-    // 🔹 Obtener reservas por hotel
     @GetMapping("/hotel/{hotelId}")
     public ResponseEntity<?> obtenerReservasPorHotel(@PathVariable Long hotelId) {
         try {
@@ -51,4 +50,15 @@ public class ReservaController {
             return ResponseEntity.status(500).body("Error al obtener las reservas.");
         }
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> obtenerReservasPorUsuario(@PathVariable Long userId) {
+        try {
+            List<Reserva> reservas = reservaService.obtenerReservasPorUsuario(userId);
+            return ResponseEntity.ok(reservas);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al obtener las reservas del usuario.");
+        }
+    }
+
 }

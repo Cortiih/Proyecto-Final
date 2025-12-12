@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 import "./LoginPage.css";
 
@@ -10,6 +10,9 @@ export const LoginPage = () => {
   const [errors, setErrors] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
+  const location = useLocation();
+  const fromReserva = new URLSearchParams(location.search).get("fromReserva");
+
 
   const validate = () => {
     const newErrors = {};
@@ -23,7 +26,7 @@ export const LoginPage = () => {
       newErrors.password = "La contraseña debe tener al menos 6 caracteres";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
+    return Object.keys(newErrors).length === 0;
   }
 
 
@@ -38,8 +41,8 @@ export const LoginPage = () => {
         password
       });
 
-      login(res.data); 
-      navigate("/");   
+      login(res.data);
+      navigate("/");
     } catch (err) {
       setErrors(err.response?.data || "Error al iniciar sesión");
     }
@@ -50,6 +53,13 @@ export const LoginPage = () => {
       <div className="login-card">
         <h2>Iniciar Sesión</h2>
         {errors.general && <p className="error-msg">{errors.general}</p>}
+
+        {fromReserva && (
+          <div className="login-warning">
+            <span className="login-warning-icon">⚠️</span>
+            <p>Debes iniciar sesión para continuar con tu reserva. Si no tienes cuenta, puedes registrarte.</p>
+          </div>
+        )}
 
         <form className="login-form" onSubmit={handleSubmit}>
           <input

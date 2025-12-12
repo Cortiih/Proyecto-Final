@@ -4,12 +4,15 @@ import com.proyecto.backend.model.Hotel;
 import com.proyecto.backend.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService {
@@ -96,6 +99,33 @@ public class HotelService {
 
     public List<Hotel> getAllHotels() {
         return hotelRepository.findAll();
+    }
+
+
+    public Page<Hotel> getAvailableHotels(String startDate, String endDate, Pageable pageable) {
+
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        // Filtrar hoteles que no tienen reservas en las fechas pedidas
+        List<Hotel> availableHotels = hotels.stream()
+                .filter(hotel -> hotel.getReservas().stream().noneMatch(reserva ->
+                        !(reserva.getEndDate().isBefore(start) || reserva.getStartDate().isAfter(end))
+                ))
+                .collect(Collectors.toList());
+
+        // PAGINACIÓN MANUAL
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = Math.min(startIndex + pageable.getPageSize(), availableHotels.size());
+
+        List<Hotel> pageContent = availableHotels.subList(
+                Math.min(startIndex, availableHotels.size()),
+                Math.min(endIndex, availableHotels.size())
+        );
+
+        return new PageImpl<>(pageContent, pageable, availableHotels.size());
     }
 
 

@@ -1,0 +1,56 @@
+.mis-reservas-page {
+  padding: 20px;
+  background-color: beige;
+  min-height: calc(100vh - 80px);
+}
+
+.mis-reservas-page h1 {
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 20px;
+  color: #683b1f;
+}
+
+.lista-reservas {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.reserva-item {
+  background: white;
+  padding: 18px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-left: 6px solid #683b1f;
+  transition: transform 0.2s ease;
+}
+
+.reserva-item:hover {
+  transform: scale(1.01);
+}
+
+.reserva-item h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  color: #683b1f;
+}
+
+.reserva-item p {
+  margin: 4px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.reserva-item strong {
+  color: #4f2c15;
+}
+
+.mis-reservas-page > p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #4f2c15;
+}

@@ -113,4 +113,4 @@ export const HotelRating = ({ hotelId }) => {
       )}
     </div>
   );
-};
+}

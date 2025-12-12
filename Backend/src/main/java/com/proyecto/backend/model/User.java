@@ -40,7 +40,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "hotel_id")
     )
-    @JsonIgnoreProperties("favorites")
+    @JsonIgnoreProperties("reservas")
     private Set<Hotel> favorites = new HashSet<>();
 
 

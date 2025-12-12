@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,6 +72,18 @@ public class HotelController {
     public List<Hotel> findAllWithoutPagination() {
         return hotelService.getAllHotels();
     }
+
+
+    @GetMapping("/available")
+    public ResponseEntity<Page<Hotel>> getAvailable(
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @PageableDefault(size = 10) Pageable pageable
+    ) {
+        Page<Hotel> hotels = hotelService.getAvailableHotels(startDate, endDate, pageable);
+        return ResponseEntity.ok(hotels);
+    }
+
 
 }
 

@@ -175,6 +175,21 @@ input[type="text"] {
   background-color: beige;
 }
 
+.reservations-link {
+  position: absolute;
+  left: 20px; 
+  background-color: #683b1f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.reservations-link:hover {
+  background-color: #86573a;
+}
 
 .recommendations h2 {
   text-align: center;
@@ -446,6 +461,13 @@ input[type="text"] {
     font-size: 22px;
   }
 
+  .reservations-link{
+    position: static;
+    margin-top: 5px;
+    padding: 7px 14px;
+    font-size: 14px;
+  }
+
   .favorites-link {
     position: static;
     margin-top: 5px;
@@ -554,6 +576,13 @@ input[type="text"] {
 
   .recommendations-header h2 {
     font-size: 20px;
+  }
+
+  .reservations-link{
+    position: static;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 15px;
   }
 
   .favorites-link {

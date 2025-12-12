@@ -4,6 +4,7 @@ import "./Main.css"
 import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import WhatsAppButton from './WhatsAppButton';
 
 
 
@@ -19,6 +20,7 @@ export const Main = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [favorites, setFavorites] = useState([]);
+
 
   useEffect(() => {
     fetch('http://localhost:8080/api/hotels')
@@ -79,26 +81,32 @@ export const Main = () => {
   const clearFilters = () => setSelectedCategories([]);
 
   const handleSearch = () => {
-    const filtered = hotels.filter((hotel) => {
-      const matchText =
+    // Si no hay fechas, filtra por texto nada más
+    if (!startDate || !endDate) {
+      const filtered = hotels.filter(hotel =>
         hotel.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        hotel.location?.toLowerCase().includes(searchText.toLowerCase());
+        hotel.location?.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredHotels(filtered);
+      return;
+    }
 
-      // si no hay fechas, solo filtra por texto
-      if (!startDate || !endDate) return matchText;
+    // Si hay fechas → llamar backend
+    fetch(`http://localhost:8080/api/hotels/available?startDate=${startDate}&endDate=${endDate}&page=${page}`)
+      .then(res => res.json())
+      .then(data => {
+        // data.content contiene hasta 10 hoteles de esa página
+        const filtered = data.content.filter(hotel =>
+          hotel.name.toLowerCase().includes(searchText.toLowerCase()) ||
+          hotel.location?.toLowerCase().includes(searchText.toLowerCase())
+        );
 
-      const checkIn = new Date(startDate);
-      const checkOut = new Date(endDate);
-      const today = new Date();
-
-
-      const available = checkIn >= today && checkOut > checkIn;
-
-      return matchText && available;
-    });
-
-    setFilteredHotels(filtered);
-  };
+        setHotels(data.content);
+        setFilteredHotels(filtered);
+        setTotalPages(data.totalPages);
+      })
+      .catch(err => console.error("Error buscando por fecha:", err));
+  }
 
 
   const user = JSON.parse(localStorage.getItem("user")) || null;
@@ -238,6 +246,11 @@ export const Main = () => {
 
       <section className="recommendations">
         <div className="recommendations-header">
+          {user && (
+            <Link to="/mis-reservas" className="reservations-link">
+              Mis Reservas
+            </Link>
+          )}
           <h2>Recomendaciones</h2>
           {user && (
             <Link to="/favorites" className="favorites-link">
@@ -297,7 +310,7 @@ export const Main = () => {
       </section>
 
 
-
+            <WhatsAppButton/>
     </main>
   )
 }

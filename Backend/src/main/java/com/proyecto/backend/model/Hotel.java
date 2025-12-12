@@ -1,5 +1,6 @@
 package com.proyecto.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -34,6 +35,10 @@ public class Hotel {
     )
 
     private List<Feature> features = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reserva> reservas = new ArrayList<>();
 
     public Hotel() {
 
@@ -117,6 +122,14 @@ public class Hotel {
 
     public void setFeatures(List<Feature> features) {
         this.features = features;
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
     }
 }
 

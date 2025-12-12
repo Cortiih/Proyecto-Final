@@ -47,12 +47,16 @@ public class SecurityConfig {
                                 "/api/reservas/hotel/**").permitAll()  
 
                         .requestMatchers(HttpMethod.POST, "/api/ratings/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/reservas/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/hotels/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/hotels/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/hotels/**").hasRole("ADMIN")
                         .requestMatchers("/api/features/**").hasRole("ADMIN")
+
+
+
 
                         .anyRequest().authenticated()
                 )

@@ -291,7 +291,7 @@
 .date-inputs {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: left;
   flex-wrap: wrap;
   margin-top: 10px;
 }
@@ -321,6 +321,29 @@
   text-align: center;
   margin: 20px auto;
   width: 80%;
+}
+
+.reserve-section {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.reserve-btn {
+  background-color: #683b1f;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.reserve-btn:hover {
+  background-color: #5a2e17;
+  transform: scale(1.05);
 }
 
 

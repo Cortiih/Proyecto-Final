@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthProvider";
 export const ProtectedRoute = ({ adminRequired }) => {
   const { user } = useAuth();
 
-  // no logueado → login
+  // no logueado va a login
   if (!user) return <Navigate to="/login" replace />;
 
   // si no se requiere ser admin, cualquiera logueado puede pasar
