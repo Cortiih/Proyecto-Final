@@ -13,10 +13,10 @@ export const AdminHotelListPage = () => {
     fetch("http://localhost:8080/api/hotels/all")
       .then((res) => res.json())
       .then((data) => {
-        setHotels(data); 
+        setHotels(data);
       })
       .catch((err) => console.error("Error cargando hoteles:", err));
-    }
+  }
 
   useEffect(() => {
     fetchHotels();
@@ -32,20 +32,20 @@ export const AdminHotelListPage = () => {
     const token = getToken();
 
     fetch(`http://localhost:8080/api/hotels/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  })
-    .then((res) => {
-      if (res.ok) {
-        setHotels(hotels.filter((hotel) => hotel.id !== id));
-        alert("Hotel eliminado con éxito");
-      } else {
-        alert("Error al eliminar el hotel");
-      }
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
     })
-    .catch((err) => console.error("Error eliminando hotel:", err));
+      .then((res) => {
+        if (res.ok) {
+          setHotels(hotels.filter((hotel) => hotel.id !== id));
+          alert("Hotel eliminado con éxito");
+        } else {
+          alert("Error al eliminar el hotel");
+        }
+      })
+      .catch((err) => console.error("Error eliminando hotel:", err));
   }
 
   return (
@@ -66,7 +66,7 @@ export const AdminHotelListPage = () => {
               <td>{hotel.name}</td>
               <td>
                 <Link to={`/admin/hotels/edit/${hotel.id}`}>
-                <button className="action-btn">Editar</button>
+                  <button className="action-btn">Editar</button>
                 </Link>
                 <button className="action-btn delete" onClick={() => handleDelete(hotel.id)}
                 >Eliminar</button>

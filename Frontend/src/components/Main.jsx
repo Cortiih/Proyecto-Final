@@ -302,6 +302,7 @@ export const Main = () => {
                 className={page === i ? "active" : ""}
               >
                 {i + 1}
+             
               </button>
             ))}
           <button onClick={() => setPage(page + 1)} disabled={page === totalPages - 1}>Siguiente ▶</button>
