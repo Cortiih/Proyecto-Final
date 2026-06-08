@@ -1,40 +1,67 @@
 #  Plataforma de Reservas - Fullstack App
 
 Aplicación web desarrollada con React y Spring Boot que permite a los usuarios explorar hoteles, realizar reservas y gestionar favoritos.
+Desarrollada como Proyecto Final del curso Professional Developer en Digital House.
 
+Full-Stack: React.js (frontend) + Java Spring Boot (backend) + MySQL (base de datos)
+
+
+##Funcionalidades
+
+- Registro y login de usuarios con autenticación JWT
+- Sistema de roles: USER y ADMIN con rutas protegidas
+- Exploración de hoteles con filtrado por categorías y características
+- Reservas con validación de fechas (sin solapamientos)
+- Favoritos por usuario
+- Panel ADMIN: CRUD completo de hoteles, categorías y características
 
 ##  Tecnologías
 
 ### Frontend
-- React.js
-- JavaScript
-- CSS
+Tecnología           Uso
+React.js             UI y manejo de estado
+JavaScript (ES6+)    Lógica de componentes
+CSS3                 Estilos y diseño responsive
 
 ### Backend
-- Spring Boot
-- Java
-- JPA / Hibernate
+Tecnología           Uso
+Java + Spring Boot   API REST
+JPA / Hibernate      ORM y acceso a datos
+MySQL                Base de datos relacional
+JWT                  Autenticación stateless
+Spring Security      Protección de endpoints por rol
 
-### Base de datos
-- MySQL
+## Estructura del proyecto
 
-### Seguridad
-- JWT (Json Web Token)
-- Roles (USER / ADMIN)
+Proyecto-Final/
+├── Frontend/          # Aplicación React
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── context/
+│   └── public/
+└── Backend/           # API Spring Boot
+    └── src/main/java/
+        ├── controller/
+        ├── service/
+        ├── repository/
+        ├── model/
+        └── security/  # JWT + Spring Security
 
-##  Funcionalidades
+ ## Endpoints principales de la API
+Método      Endpoint          Descripción            Rol   
+POST        /auth/register    Registro de usuario    Público
+POST        /auth/login       Login + token JWT      Público
+GET         /hoteles          Listar hoteles         Público
+POST        /hoteles          Crear hotel            ADMIN
+PUT         /hoteles/{id}     Editar hotel           ADMIN
+DELETE      /hoteles/{id}     Eliminar hotel         ADMIN
+POST        /reservas         Crear reserva          USER
+GET         /favoritos        Ver favoritos          USER
 
-- Registro y login de usuarios
-- Autenticación con JWT
-- Protección de rutas según rol
-- CRUD de hoteles (ADMIN)
-- Sistema de reservas con validación de fechas
-- Favoritos por usuario
-- Filtrado por categorías
-- Gestión de características
+## Autor
+Santino Corti — Full-Stack Developer (Junior)
 
-##  Seguridad
-
-- Implementación de JWT
-- Filtro personalizado para validar tokens
-- Protección de endpoints con roles
+- GitHub: @Cortiih
+- LinkedIn: santino-corti-66269a400
+- Email: santicor.003@gmail.com        
